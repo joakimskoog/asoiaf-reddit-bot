@@ -20,7 +20,7 @@ To retrieve information about a given house, just include the search term !House
 
 
 | Name | Coat of arms | Words | Cadet branch | Seat | Current lord | Region | Title | Overlord | Founded|
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 | Targaryen  | Sable, a three headed dragon breathing flames gules | Fire and Blood | Blackfyre, Baratheon | Red Keep (formerly), Dragonstone (formerly), Summerhall (formerly) | Queen Daenerys Targaryen | King's Landing, Dragonstone, Valyria | King of the Seven Kingdoms, Lord of the Andals, the Rhoynar and the First Men, Prince of Dragonstone (heir apparent) | None | House Targaryen: >114BC, House Targaryen of King's Landing:0AC
 
 
