@@ -1,8 +1,3 @@
-'''
-Created on 23 maj 2014
-
-@author: Oakin
-'''
 
 from objects import House
 
