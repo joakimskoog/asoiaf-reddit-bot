@@ -38,7 +38,7 @@ def get_comments(reddit):
     the X latest comments.
     :returns All comments from /r/asoiaf
     '''
-    subreddit = reddit.get_subreddit('asoiaf')
+    subreddit = reddit.get_subreddit('asoiafbottest')
     return subreddit.get_comments()
 
 def has_not_been_answered_before(comment):

@@ -1,5 +1,6 @@
 
 from objects import House
+import sqlite3
 
 class DatabaseHandler(object):
     '''
@@ -8,23 +9,39 @@ class DatabaseHandler(object):
 
 
     def __init__(self):
-        '''
-        Constructor
-        '''
+        self.__database__ = 'example.db'
 
     def get_house(self, houseName):
-        house = House()
-        house.name = houseName
-        house.coat_of_arms = "Sable, a three headed dragon breathing flames gules"
-        house.words = "Fire and Blood"
-        house.cadet_branch = "Blackfyre, Baratheon"
-        house.seat = "Red Keep (formerly), Dragonstone (formerly), Summerhall (formerly)"
-        house.current_lord = "Queen Daenerys Targaryen"
-        house.region = "King's Landing, Dragonstone, Valyria"
-        house.title = "King of the Seven Kingdoms, Lord of the Andals, the Rhoynar and the First Men, Prince of Dragonstone (heir apparent)"
-        house.heir = "Testing"
-        house.overlord = "None"
-        house.founder = "Wutwut"
-        house.founded = "House Targaryen: >114BC, House Targaryen of King's Landing:0AC"
+        connection = sqlite3.connect(self.__database__)
+
+        #Encapsulate the rows so we can index with strings later on
+        connection.row_factory = sqlite3.Row
+        cursor = connection.cursor()
+
+        #Create a tuple so we can use the safe ?-method
+        t = (houseName,)
+        cursor.execute('SELECT* FROM house WHERE name=?', t)
+
+        #We do fetchone() since we only expect to receive one row as a result. This may change in the future, look further into this later on.
+        row = cursor.fetchone()
+
+        house = None
+
+        if row != None:
+            house = House()
+            house.name = row['name']
+            house.coat_of_arms = row['coat_of_arms']
+            house.words = row['words']
+            house.cadet_branch = row['cadet_branch']
+            house.seat = row['seat']
+            house.current_lord = row['current_lord']
+            house.region = row['region']
+            house.title = row['title']
+            house.heir = row['heir']
+            house.overlord = row['overlord']
+            house.founder = row['founder']
+            house.founded = row['founded']
+
+        connection.close()
 
         return house

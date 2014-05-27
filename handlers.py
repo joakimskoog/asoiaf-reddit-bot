@@ -23,6 +23,8 @@ def factory(comment):
             reply = ''
             valueList = []
 
+            #The columns that don't have a value should be removed somewhere.
+
             valueList.append(house.name)
             valueList.append(house.coat_of_arms)
             valueList.append(house.words)
@@ -42,7 +44,7 @@ def factory(comment):
 
             reply += '\n'
 
-            for i in range(0, len(self.__columnHeaders__)):
+            for header in self.__columnHeaders__:
                 reply += '---------|'
 
             reply += '\n'
@@ -55,6 +57,8 @@ def factory(comment):
 
         def get_reply(self):
             house = self.__get_house__()
+
+            #There needs to be some sort of error handling when the house does not exist.
             reply = self.__get_formatted_reply__(house)
 
             return reply
