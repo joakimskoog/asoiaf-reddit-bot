@@ -7,9 +7,31 @@ class DatabaseHandler(object):
     classdocs
     '''
 
-
     def __init__(self):
         self.__database__ = 'example.db'
+
+
+    def is_comment_answered(self, comment_id):
+        connection = sqlite3.connect(self.__database__)
+        cursor = connection.cursor()
+
+        t = (comment_id,)
+        cursor.execute('SELECT* FROM answered_comments WHERE comment_id=?', t)
+        row = cursor.fetchone()
+
+        connection.close()
+
+        return row != None
+
+    def set_comment_as_answered(self, comment_id):
+        connection = sqlite3.connect(self.__database__)
+        cursor = connection.cursor()
+
+        t = (comment_id,)
+        cursor.execute('INSERT INTO answered_comments VALUES (?)', t)
+        connection.commit()
+
+        connection.close()
 
     def get_house(self, houseName):
         connection = sqlite3.connect(self.__database__)

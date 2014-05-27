@@ -3,6 +3,7 @@ import praw
 import time
 import configparser
 import handlers
+from database_handler import DatabaseHandler
 
 
 # ==========================
@@ -10,7 +11,7 @@ import handlers
 # ==========================
 
 #This will be included in the database when it's implemented.
-answered_comments = set()
+database = DatabaseHandler()
 
 def initiate_bot():
     '''
@@ -38,24 +39,27 @@ def get_comments(reddit):
     the X latest comments.
     :returns All comments from /r/asoiaf
     '''
-    subreddit = reddit.get_subreddit('asoiafbottest')
-    return subreddit.get_comments()
+    subreddit = reddit.get_subreddit('asoiaf')
+    return subreddit.get_comments(limit = 100)
 
-def has_not_been_answered_before(comment):
-    return comment.id not in answered_comments
 
 def reply_to_comment(comment, handler):
     reply = handler.get_reply()
-    reply += '\n\n'+'For more information about me, visit: https://github.com/joakimskoog/ASOIAFBot' + '\n\nTo give feedback and/or report bugs, visit: https://github.com/joakimskoog/ASOIAFBot/issues'
+
+    reply += '\n_____\n'
+    reply += '[^([More information])] (https://github.com/joakimskoog/ASOIAFBot) '
+    reply += '[^([Bugs/Feedback])] (https://github.com/joakimskoog/ASOIAFBot/issues)'
 
     comment.reply(reply)
 
     print("Commented")
-    answered_comments.add(comment.id)
+    print(comment.id)
+    database.set_comment_as_answered(comment.id)
 
 def handle_comment(comment):
-    if has_not_been_answered_before(comment):
-        handler = handlers.factory(comment.body)
+    print(comment)
+    if not database.is_comment_answered(comment.id):
+        handler = handlers.factory(comment.body, database)
 
         if handler != None:
             reply_to_comment(comment, handler)

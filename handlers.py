@@ -3,17 +3,17 @@ from database_handler import DatabaseHandler
 import re
 
 
-def factory(comment):
+def factory(comment, database_handler):
     class HouseHandler(object):
         '''
         Handler for the house search term. It's responsibility is to retrieve the correct
         house object from the database and then format the reply in a nice way.
         '''
 
-        def __init__(self, name_of_house):
+        def __init__(self, name_of_house, database_handler):
             self.__columnHeaders__ = ['Name', 'Coat of arms', 'Words', 'Cadet branch', 'Seat', 'Current lord',
                                       'Region', 'Title', 'Heir', 'Overlord', 'Founder', 'Founded']
-            self.__database_handler__ = DatabaseHandler()
+            self.__database_handler__ = database_handler
             self.name_of_house = name_of_house
 
         def __get_house__(self):
@@ -22,8 +22,6 @@ def factory(comment):
         def __get_formatted_reply__(self, house):
             reply = ''
             valueList = []
-
-            #The columns that don't have a value should be removed somewhere.
 
             valueList.append(house.name)
             valueList.append(house.coat_of_arms)
@@ -38,9 +36,9 @@ def factory(comment):
             valueList.append(house.founder)
             valueList.append(house.founded)
 
-
-            for header in self.__columnHeaders__:
-                reply += header + '|'
+            for i in range(0, len(self.__columnHeaders__)):
+                if valueList[i] != '':
+                    reply += self.__columnHeaders__[i] + '|'
 
             reply += '\n'
 
@@ -50,7 +48,8 @@ def factory(comment):
             reply += '\n'
 
             for value in valueList:
-                reply += value + '|'
+                if value != '':
+                    reply += value + '|'
 
             return reply
 
@@ -58,10 +57,10 @@ def factory(comment):
         def get_reply(self):
             house = self.__get_house__()
 
-            #There needs to be some sort of error handling when the house does not exist.
-            reply = self.__get_formatted_reply__(house)
-
-            return reply
+            if house != None:
+                return self.__get_formatted_reply__(house)
+            else:
+                return 'Error |\n ---------|\n The given house "' + self.name_of_house + '" does not exist.|'
 
 
     def get_house_from_comment(comment):
@@ -76,6 +75,6 @@ def factory(comment):
 
 
     house = get_house_from_comment(comment)
-    if house != None: return HouseHandler(house)
+    if house != None: return HouseHandler(house, database_handler)
 
 
