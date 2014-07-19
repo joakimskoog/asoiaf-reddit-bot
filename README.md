@@ -7,7 +7,7 @@ A reddit bot that retrieves information about all things in the series A Song Of
 Features
 =========
 <ul>
-<li>Retrieve information about houses. Currently supported regions are: Crownlands, Riverlands, Stormlands, Dorne and a small portion of the Iron Islands</li>
+<li>Retrieve information about houses. Currently supported regions are: Crownlands, Riverlands, Stormlands, Dorne and the Iron Islands.</li>
 </ul>
 
 
@@ -38,5 +38,5 @@ Did you find a bug or maybe an inaccuracy? Follow the steps below to ensure a sw
 Do you want to introduce a new feature?
 
 <ul>
-<li> This will be introduced in later versions </li>
+<li> Make a pull request </li>
 </ul>
