@@ -40,7 +40,7 @@ def get_comments(reddit):
     :returns All comments from /r/asoiaf
     '''
     subreddit = reddit.get_subreddit('asoiaf')
-    return subreddit.get_comments(limit = 100)
+    return subreddit.get_comments(limit = 200)
 
 
 def reply_to_comment(comment, handler):
@@ -52,12 +52,10 @@ def reply_to_comment(comment, handler):
 
     comment.reply(reply)
 
-    print("Commented")
-    print(comment.id)
+    print('Commented. ID: ' + comment.id)
     database.set_comment_as_answered(comment.id)
 
 def handle_comment(comment):
-    print(comment)
     if not database.is_comment_answered(comment.id):
         handler = handlers.factory(comment.body, database)
 
@@ -71,11 +69,13 @@ def handle_comments(comments):
 
 def main_loop(reddit):
     while True:
-        comments = get_comments(reddit)
-        handle_comments(comments)
-
-        #Sleep for a while so we don't break the API rules.
-        time.sleep(60)
+        try:
+            comments = get_comments(reddit)
+            handle_comments(comments)
+        except praw.errors.RateLimitExceeded as error:
+            time.sleep(error.sleep_time)
+            print('Time to sleep for ' + error.sleep_time + ' seconds')
+        time.sleep(30)
 
 if __name__ == '__main__':
     reddit = initiate_bot()

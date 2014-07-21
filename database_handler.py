@@ -33,7 +33,7 @@ class DatabaseHandler(object):
 
         connection.close()
 
-    def get_house(self, houseName):
+    def get_houses(self, houseName):
         connection = sqlite3.connect(self.__database__)
 
         #Encapsulate the rows so we can index with strings later on
@@ -41,29 +41,31 @@ class DatabaseHandler(object):
         cursor = connection.cursor()
 
         #Create a tuple so we can use the safe ?-method
-        t = (houseName,)
-        cursor.execute('SELECT* FROM house WHERE name=?', t)
+        t = (houseName+'%',)
+        cursor.execute('SELECT* FROM house WHERE name LIKE ?', t)
 
-        #We do fetchone() since we only expect to receive one row as a result. This may change in the future, look further into this later on.
-        row = cursor.fetchone()
+        rows = cursor.fetchall()
 
-        house = None
+        houses = []
 
-        if row != None:
-            house = House()
-            house.name = row['name']
-            house.coat_of_arms = row['coat_of_arms']
-            house.words = row['words']
-            house.cadet_branch = row['cadet_branch']
-            house.seat = row['seat']
-            house.current_lord = row['current_lord']
-            house.region = row['region']
-            house.title = row['title']
-            house.heir = row['heir']
-            house.overlord = row['overlord']
-            house.founder = row['founder']
-            house.founded = row['founded']
+        for row in rows:
+            if row != None:
+                house = None
+                house = House()
+                house.name = row['name']
+                house.coat_of_arms = row['coat_of_arms']
+                house.words = row['words']
+                house.cadet_branch = row['cadet_branch']
+                house.seat = row['seat']
+                house.current_lord = row['current_lord']
+                house.region = row['region']
+                house.title = row['title']
+                house.heir = row['heir']
+                house.overlord = row['overlord']
+                house.founder = row['founder']
+                house.founded = row['founded']
+                houses.append(house)
 
         connection.close()
 
-        return house
+        return houses
