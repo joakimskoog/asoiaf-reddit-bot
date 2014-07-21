@@ -38,5 +38,5 @@ Did you find a bug or maybe an inaccuracy? Follow the steps below to ensure a sw
 Do you want to introduce a new feature?
 
 <ul>
-<li> This will be introduced in later versions </li>
+<li> Make a pull request </li>
 </ul>
