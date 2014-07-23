@@ -75,6 +75,10 @@ def main_loop(reddit):
         except praw.errors.RateLimitExceeded as error:
             time.sleep(error.sleep_time)
             print('Time to sleep for ' + error.sleep_time + ' seconds')
+        except:
+            sleep_duration = 30
+            time.sleep(sleep_duration)
+            print('Generic error: Time to sleep for ' + sleep_duration + ' seconds')
         time.sleep(30)
 
 if __name__ == '__main__':
